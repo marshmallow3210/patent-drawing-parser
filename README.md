@@ -1,7 +1,7 @@
 # Patent Drawing Image Parser (PDF Input)
 
 This project parses **patent drawing pages** from a **PDF** (even without a text layer).  
-It converts each PDF page to an image, automatically detects and corrects page rotation (OCR-based), performs a unified content crop, extracts OCR-based location hints, and then calls an LLM backend (e.g., Google Gemini / GPT-style APIs; currently implemented with Google Gemini) to return structured JSON results (figure/component labels and optional hierarchy).
+It converts each PDF page to an image, automatically detects and corrects page rotation (OCR-based), performs a unified content crop, extracts OCR-based location hints, and then calls a pluggable LLM backend (provider-agnostic; this repo currently uses Google Gemini) to return structured JSON results (figure/component labels and optional hierarchy).
 
 # Directory Structure
 ```
@@ -16,6 +16,12 @@ patent-drawing-parser/
 # Environment Requirements
 - Python 3.10 ~ 3.12
 - The commands below use Windows PowerShell as an example.
+
+# Prerequisites
+- Install **Tesseract OCR** (Windows) and ensure `tesseract.exe` is available.
+- If needed, update the path in `src/pdf_utils.py`:
+  - `pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"`
+
 
 # Installation & Run (Windows PowerShell)
 1. Place the entire patent-drawing-parser folder anywhere you like.
@@ -120,4 +126,8 @@ ocr_log_<YOUR_FILE_NAME>.txt (saved to the working directory).
 curl.exe -X POST "http://127.0.0.1:8000/api/debug?page=1" ^
   -H "Accept: application/json" ^
   -F "file=@YOUR_FILE_NAME;type=application/pdf"
+```
+- Response format:
+```json
+{"raw":"...","page_rotation":0}
 ```
