@@ -1,0 +1,7 @@
+﻿flask
+pillow
+pymupdf
+pytesseract
+opencv-python
+numpy
+requests
